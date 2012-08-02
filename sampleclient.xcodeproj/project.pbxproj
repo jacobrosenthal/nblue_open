@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B3F1F0C15CA9834001C37C2 /* BRDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F1F0A15CA9834001C37C2 /* BRDevice.m */; };
+		5B3F1F0D15CA9834001C37C2 /* nBlue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B3F1F0B15CA9834001C37C2 /* nBlue.m */; };
 		DE3FA7FA1513EA120035F986 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE3FA7F91513EA120035F986 /* Default@2x.png */; };
-		DE4258D915190E9200D74186 /* libnBlue.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE4258D815190E9200D74186 /* libnBlue.a */; };
 		DE6953351518008F00ED436E /* GenericDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6953341518008F00ED436E /* GenericDevice.m */; };
 		DE6953391518032C00ED436E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6953381518032C00ED436E /* main.m */; };
 		DE6953401518036700ED436E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DE69533B1518036700ED436E /* AppDelegate.m */; };
@@ -23,8 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5B3F1F0A15CA9834001C37C2 /* BRDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRDevice.m; sourceTree = "<group>"; };
+		5B3F1F0B15CA9834001C37C2 /* nBlue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = nBlue.m; sourceTree = "<group>"; };
 		DE3FA7F91513EA120035F986 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		DE4258D815190E9200D74186 /* libnBlue.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnBlue.a; sourceTree = "<group>"; };
 		DE6953331518008F00ED436E /* GenericDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericDevice.h; sourceTree = "<group>"; };
 		DE6953341518008F00ED436E /* GenericDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericDevice.m; sourceTree = "<group>"; };
 		DE6953381518032C00ED436E /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -56,7 +58,6 @@
 				DED1A24814FFE28C002966CD /* UIKit.framework in Frameworks */,
 				DED1A24A14FFE28C002966CD /* Foundation.framework in Frameworks */,
 				DED1A24C14FFE28C002966CD /* CoreGraphics.framework in Frameworks */,
-				DE4258D915190E9200D74186 /* libnBlue.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,8 +78,9 @@
 		DED1A23814FFE28C002966CD = {
 			isa = PBXGroup;
 			children = (
-				DE4258D815190E9200D74186 /* libnBlue.a */,
 				DE6953481518046800ED436E /* BRDevice.h */,
+				5B3F1F0A15CA9834001C37C2 /* BRDevice.m */,
+				5B3F1F0B15CA9834001C37C2 /* nBlue.m */,
 				DE6953491518046800ED436E /* nBlue.h */,
 				DED1A25E14FFE2DA002966CD /* icon.png */,
 				DE3FA7F91513EA120035F986 /* Default@2x.png */,
@@ -191,6 +193,8 @@
 				DE6953401518036700ED436E /* AppDelegate.m in Sources */,
 				DE6953411518036700ED436E /* ConnectionController.m in Sources */,
 				DE6953421518036700ED436E /* ScanController.m in Sources */,
+				5B3F1F0C15CA9834001C37C2 /* BRDevice.m in Sources */,
+				5B3F1F0D15CA9834001C37C2 /* nBlue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
