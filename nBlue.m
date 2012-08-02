@@ -21,6 +21,13 @@
 //Is set to YES if the device is currently powered on and available to use. (initWithDelegate has been called and has completed
 @synthesize isInitialized = _isInitialized;
 
+
+
+//added by me
+@synthesize CM;
+
+
+//wraps didDiscoverPeripheral
 /**
  Method that is called everytime a device is found.
  @param p CBPeripheral object from the CoreBluetooth.framework that can be used to initialize BRDevice objects
@@ -31,6 +38,7 @@
 
 }
 
+//must be some kind of timeout timer calling stopscan
 /**
  Method that is called when scan_nBlue has completed.
  */
@@ -39,7 +47,7 @@
     
 }
 
-
+//wrapping didConnectPeripheral
 /**
  Method is called signifying the completion of a connect request
  @param p CBPeripheral object that has been connected
@@ -52,7 +60,7 @@
     
 }
 
-
+//wrapping didDisconnectPeripheral
 /**
  Method that is called when a device is disconnected.
  @param p CBPeripheral object that has been disconnected
@@ -65,6 +73,7 @@
     
 
 }
+
 
 /**
  Fires when isInitialized == YES.  This is a good place to start scanning, connecting, etc
@@ -82,8 +91,8 @@
  @return nBlue object as id
  */
 +(id) shared_nBlue{
-    
-    return nil;
+    //total guess
+    return self;
 }
 
 
@@ -95,7 +104,42 @@
  */
 +(id) shared_nBlue:(id<nBlueDelegate>)delegate{
     
-    return nil;
+    // Persistent instance.
+    static nBlue *_default = nil;
+    
+    // Small optimization to avoid wasting time after the
+    // singleton being initialized.
+    if (_default != nil)
+    {
+        return _default;
+    }
+    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_4_0
+    // Allocates once with Grand Central Dispatch (GCD) routine.
+    // It's thread safe.
+    static dispatch_once_t safer;
+    dispatch_once(&safer, ^(void)
+                  {
+                      _default = [[nBlue alloc] init];
+                      _default.nBlueDelegate=delegate;
+                      _default.CM = [[CBCentralManager alloc] initWithDelegate:_default queue:nil];
+
+                  });
+#else
+    // Allocates once using the old approach, it's slower.
+    // It's thread safe.
+    @synchronized([nBlue class])
+    {
+        // The synchronized instruction will make sure,
+        // that only one thread will access this point at a time.
+        if (_default == nil)
+        {
+            _default = [[nBlue alloc] init];
+            // private initialization goes here.
+        }
+    }
+#endif
+    return _default;
 }
 
 
@@ -106,8 +150,7 @@
  @return nBlue object as id
  */
 -(id) initWithDelegate:(id<nBlueDelegate>)delegate{
-    
-    return nil;
+    return self;
 }
 
 
@@ -121,7 +164,10 @@
  */
 -(void) scan_nBlue:(int)timeout ServiceFilter:(BRService)num{
     
-    
+    [NSTimer scheduledTimerWithTimeInterval:(float)timeout target:self selector:@selector(scanTimer:) userInfo:nil repeats:NO];
+
+    [self.CM scanForPeripheralsWithServices:nil options:nil]; // TODO: Limit to nblue
+
 }
 
 
@@ -153,8 +199,10 @@
  @param d a BRDevice to connect.
  */
 -(void) connectDevice:(BRDevice*)d{
-    
-    
+    //scancontroller is the delegate? somehow device needs to be generic device or brdevice
+    //[self setNBlueDelegate:[d deviceDelegate]];
+
+    [CM connectPeripheral:d.cbPeripheral options:nil];
 }
 
 
@@ -191,4 +239,53 @@
 
 }
 
+
+
+
+
+
+
+//going to put all did* here for CBCentralManagerDelegate--- CBPeripheralDelegate stuff seems split across this and device?
+- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral {
+    [_nBlueDelegate didConnect:peripheral error:nil];
+
+}
+
+
+- (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary *)advertisementData RSSI:(NSNumber *)RSSI {
+    //how the fuck do I get peripherals loaded if its read only? changed it
+    if (!self.peripherals) //TODO: right now will only find one device, no?
+        self.peripherals = [[NSArray alloc] initWithObjects:peripheral,nil];
+
+    NSLog(@"didDiscoverPeripheral\r\n");
+    [_nBlueDelegate deviceFound:peripheral];
+}
+
+/*
+ *  @method UUIDSAreEqual:
+ *
+ *  @param u1 CFUUIDRef 1 to compare
+ *  @param u2 CFUUIDRef 2 to compare
+ *
+ *  @returns 1 (equal) 0 (not equal)
+ *
+ *  @discussion compares two CFUUIDRef's
+ *
+ */
+
+- (int) UUIDSAreEqual:(CFUUIDRef)u1 u2:(CFUUIDRef)u2 {
+    CFUUIDBytes b1 = CFUUIDGetUUIDBytes(u1);
+    CFUUIDBytes b2 = CFUUIDGetUUIDBytes(u2);
+    if (memcmp(&b1, &b2, 16) == 0) {
+        return 1;
+    }
+    else return 0;
+}
+
+
+
+- (void) scanTimer:(NSTimer *)timer {
+    NSLog(@"Stopped Scanning\r\n");
+    NSLog(@"Known peripherals : %d\r\n",[self->_peripherals count]);
+}
 @end

@@ -62,7 +62,7 @@ typedef NSUInteger DeviceMode;
 /**
  A pointer to the CBPeripheral object that is associated with this decice
  */
-@property (nonatomic, strong, readonly) CBPeripheral *cbPeripheral;
+@property (nonatomic, strong) CBPeripheral *cbPeripheral; //TODO: why was this readonly?
 /**
  The BRSP mode of the device.
  @see -(void) changeBrspMode:(DeviceMode)mode;

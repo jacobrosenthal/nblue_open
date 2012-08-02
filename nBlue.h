@@ -72,7 +72,7 @@ typedef UInt32 BRService;
 /**
  A list of peripherals found by the scan_nBlue method.
  */
-@property (nonatomic, readonly, strong, getter=getPeripherals) NSArray *peripherals;
+@property (nonatomic, strong, getter=getPeripherals) NSArray *peripherals; //TODO: had to make not read only.. why? 
 /**
  Is set to YES if the device is currently powered on and available to use. (initWithDelegate has been called and has completed)
  */
@@ -139,5 +139,12 @@ Initialize an instance of this class using this funtion
  @return NSArray of CBUUID objects
  */
 -(NSArray*)getAcceptedServices:(BRService)serviceFilter;
+
+
+
+
+
+//added by me
+@property (strong, nonatomic) CBCentralManager *CM;
 
 @end

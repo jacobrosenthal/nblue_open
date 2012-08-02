@@ -23,6 +23,7 @@
 @synthesize deviceDelegate;
 
 
+//just wrapping didConnectPeripheral--but thats a centralmanager property.. 
 /**
  Method is called signifying the completion of a connect request
  @param error
@@ -35,6 +36,7 @@
 }
 
 
+//wrapping didDisconnectPeripheral
 /**
  Method is called signifying the completion of a disconnect request
  @param error
@@ -46,6 +48,7 @@
 }
 
 
+//wrapping didUpdateValueForCharacteristic
 /**
  Method is called everytime data is received from the BLE device.
  @param response
@@ -75,8 +78,8 @@
  @return self as id
  */
 -(id) initWithPeripheral:(CBPeripheral*)p{
-    
-    return nil;
+    self.cbPeripheral=p;
+    return self;
 }
 
 /**
@@ -85,8 +88,7 @@
  Note: Can use [nBlue shared_nBlue] to use a shared singleton instance
  */
 -(void) connect:(nBlue*)manager{
-    
-    
+    [manager connectDevice:self];
 }
 
 
@@ -119,5 +121,10 @@
     
     
 }
+
+
+
+
+//going to put some CBPeripheralDelegate stuff here as seems split across this and device?
 
 @end
